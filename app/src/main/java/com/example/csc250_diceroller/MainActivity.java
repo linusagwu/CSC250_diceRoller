@@ -7,86 +7,69 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
-
-
-    private Button zeroButton;
-    private Button oneButton;
-    private Button twoButton;
-    private Button threeButton;
-    private Button fourButton;
-    private Button fiveButton;
-    private Button sixButton;
-    private Button sevenButton;
-    private Button eightButton;
-    private Button nineButton;
     private TextView qtyTV;
+    private TextView selectedDieTV;
+    private String currentQtyText;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        this.zeroButton = this.findViewById(R.id.ZeroB);
         this.qtyTV = this.findViewById(R.id.qtyTV);
+        this.selectedDieTV = this.findViewById(R.id.selectedDieTV);
+        this.qtyTV.setText("");
+        this.currentQtyText = "";
+    }
+    private String extractNumberOfSides (String diceType)
+    {
+        // take something that looks like "D4" and return "4"
+        String answer = "";
+        for(int i = 1; i <  diceType.length(); i++)
+        {
+            answer += diceType.charAt(i);
+        }
+        return answer;
+    }
+    public void onRollButtonPressed(View v)
+    {
+        //get the qty as an int
+        String qtyString = this.qtyTV.getText().toString();
+        int qtyInt = Integer.parseInt(qtyString);
+        int[] theRolls = new int[qtyInt];
 
-        this.oneButton = this.findViewById(R.id.OneB);
-        this.qtyTV = this.findViewById(R.id.qtyTV);
+        //get the number of sides as an int
+        String fullDiceString = this.selectedDieTV.getText().toString(); //LIKE "D4" or "D6"
+        String trimmedDiceString = this.extractNumberOfSides(fullDiceString);
+        // string trimmedDiceString = fullDiceString(1);
+        int numberOfSides = Integer.parseInt(trimmedDiceString);
+         Random r = new Random();
 
-        this.twoButton = this.findViewById(R.id.TwoB);
-        this.qtyTV = this.findViewById(R.id.qtyTV);
 
-        this.threeButton = this.findViewById(R.id.ThreeB);
-        this.qtyTV = this.findViewById(R.id.qtyTV);
 
-        this.fourButton = this.findViewById(R.id.FourB);
-        this.qtyTV = this.findViewById(R.id.qtyTV);
+    }
+    public void diceButtonPressed(View v)
+    {
+        this.selectedDieTV.setText(v.getTag().toString());
+    }
 
-        this.fiveButton = this.findViewById(R.id.FiveB);
-        this.qtyTV = this.findViewById(R.id.qtyTV);
-
-        this.sixButton = this.findViewById(R.id.SixB);
-        this.qtyTV = this.findViewById(R.id.qtyTV);
-
-        this.sevenButton = this.findViewById(R.id.SevenB);
-        this.qtyTV = this.findViewById(R.id.qtyTV);
-
-        this.eightButton = this.findViewById(R.id.EightB);
-        this.qtyTV = this.findViewById(R.id.qtyTV);
-
-        this.nineButton = this.findViewById(R.id.NineB);
-        this.qtyTV = this.findViewById(R.id.qtyTV);
-
+    public void clearButtonPressed(View v) {
+        this.currentQtyText = "";
+        this.qtyTV.setText(this.currentQtyText);
 
     }
 
     public void qtyButtonpressed(View v)
     {
-        if (v == this.oneButton)
-            this.qtyTV.setText("1");
-        if (v == this.twoButton)
-            this.qtyTV.setText("2");
-        if (v == this.threeButton)
-            this.qtyTV.setText("3");
-        if (v == this.fourButton)
-            this.qtyTV.setText("4");
-        if (v == this.fiveButton)
-            this.qtyTV.setText("5");
-        if (v == this.sixButton)
-            this.qtyTV.setText("6");
-        if (v == this.sevenButton)
-            this.qtyTV.setText("7");
-        if (v == this.eightButton)
-            this.qtyTV.setText("8");
-        if (v == this.nineButton)
-            this.qtyTV.setText("9");
-     if(v == this.zeroButton)
-     {
-         this.qtyTV.setText("0");
-     }
+        Button b = (Button) v;
+
+        if(this.currentQtyText.length() == 0 && b.getText().equals("0"))
+        {
+            return;
+        }
+        this.currentQtyText += b.getText();
+        this.qtyTV.setText(this.currentQtyText);
     }
-
-
-
 }
